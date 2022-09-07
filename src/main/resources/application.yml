@@ -1,0 +1,35 @@
+spring:
+  profiles.active: local
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  flyway:
+    enabled: false
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      max-lifetime: 56000
+      connection-timeout: 2000
+  sql:
+    init:
+      mode: never
+  jpa:
+    hibernate:
+      ddl-auto: create
+    open-in-view: false
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:mysql://localhost:3306/ev_database?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: evev!@#
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
