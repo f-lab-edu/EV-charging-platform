@@ -1,0 +1,4 @@
+mybatis:
+  type-aliases-package: om.shyb.evcharging
+  configuration:
+    map-underscore-to-camel-case: true
