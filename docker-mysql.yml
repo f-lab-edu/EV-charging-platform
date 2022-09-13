@@ -5,11 +5,11 @@ services:
     image: mysql:5.7 # Mysql image
     volumes: # 호스트 디렉토리와 컨테이너 디렉토리 연결
       - ./mysql/mysqldata:/var/lib/mysql
-      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./mysql/conf.d:/etc/mysql/conf.d
       - ./mysql/initdb.d:/docker-entrypoint-initdb.d
     environment: # 컨테이너 안의 환경변수 설정
+      - MYSQL_ROOT_PASSWORD=EVev123!@#
       - MYSQL_DATABASE=ev_database
-      - MYSQL_ROOT_PASSWORD=evev!@#
     ports: # 호스트와 컨테이너 포트 매핑
-      - "3306:3306"
+      - "13306:3306"
     restart: unless-stopped # 컨테이너 다운 시 항상 재시작
