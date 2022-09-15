@@ -5,8 +5,8 @@
 <!-- 인터페이스 지정-->
 <mapper  namespace="com.shyb.evcharging.user.repository.mybatis.UserMapper">
     <insert id ="save" useGeneratedKeys="true" keyProperty="id">
-        insert into users (name, email)
-        values (#{name}, #{email})
+        insert into users (name, password, phone, email)
+        values (#{name}, #{password}, #{phone}, #{email})
     </insert>
 
     <select id="findById" resultType="User">

@@ -1,6 +1,7 @@
-package com.shyb.evcharging.repository;
+package com.shyb.evcharging.user.repository;
 
-import com.shyb.evcharging.repository.domain.User;
+
+import com.shyb.evcharging.user.domain.User;
 import java.util.List;
 import java.util.Optional;
 

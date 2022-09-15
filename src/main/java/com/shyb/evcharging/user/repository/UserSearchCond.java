@@ -1,9 +1,17 @@
-package com.shyb.evcharging.repository;
+package com.shyb.evcharging.user.repository;
 
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class UserSearchCond {
 
     private String name;
+
+    private String password;
+
+    private String phone;
 
     private String email;
 
@@ -16,19 +24,4 @@ public class UserSearchCond {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }
