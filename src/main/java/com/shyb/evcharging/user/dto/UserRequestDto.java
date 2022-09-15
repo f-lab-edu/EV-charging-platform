@@ -12,12 +12,19 @@ public class UserRequestDto {
 
     private String password;
 
+    private String confirmPassword;
+
     private String phone;
 
     private String email;
 
     @Builder
-    public UserRequestDto(String name, String password, String phone, String email) {
+    public UserRequestDto(String name, String password, String confirmPassword, String phone, String email) {
+
+        if (!password.equals(confirmPassword)) {
+            throw new IllegalArgumentException("패스워드를 다시 한 번 확인해주세요.");
+        }
+
         this.name = name;
         this.password = PasswordEncoder.encrypt(password);
         this.phone = phone;
