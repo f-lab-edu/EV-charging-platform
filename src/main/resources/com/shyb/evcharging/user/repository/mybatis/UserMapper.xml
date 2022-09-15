@@ -3,7 +3,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 인터페이스 지정-->
-<mapper  namespace="com.shyb.evcharging.repository.mybatis.UserMapper">
+<mapper  namespace="com.shyb.evcharging.user.repository.mybatis.UserMapper">
     <insert id ="save" useGeneratedKeys="true" keyProperty="id">
         insert into users (name, email)
         values (#{name}, #{email})

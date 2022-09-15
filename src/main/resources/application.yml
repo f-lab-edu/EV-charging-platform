@@ -16,7 +16,7 @@ spring:
       connection-timeout: 2000
   sql:
     init:
-      mode: never
+      mode: always
 # MyBatis
 mybatis:
   type-aliases-package: com.shyb.evcharging
