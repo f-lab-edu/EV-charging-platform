@@ -1,6 +1,7 @@
 package com.shyb.evcharging.user.dto;
 
 import com.shyb.evcharging.user.domain.User;
+import com.shyb.evcharging.utils.PasswordEncoder;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -18,7 +19,7 @@ public class UserRequestDto {
     @Builder
     public UserRequestDto(String name, String password, String phone, String email) {
         this.name = name;
-        this.password = password;
+        this.password = PasswordEncoder.encrypt(password);
         this.phone = phone;
         this.email = email;
     }
