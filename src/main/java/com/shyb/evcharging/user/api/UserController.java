@@ -3,6 +3,7 @@ package com.shyb.evcharging.user.api;
 import com.shyb.evcharging.user.application.UserService;
 import com.shyb.evcharging.user.domain.User;
 import com.shyb.evcharging.user.dto.UserRequestDto;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public User save(@RequestBody UserRequestDto user) {
+    public User save(@RequestBody @Valid UserRequestDto user) {
         return userService.save(user);
     }
 
