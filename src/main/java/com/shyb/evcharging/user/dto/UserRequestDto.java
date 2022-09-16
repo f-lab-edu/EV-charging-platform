@@ -9,6 +9,9 @@ import javax.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * 사용자 등록 요청 DTO 입니다.
+ */
 @Getter
 public class UserRequestDto {
 
