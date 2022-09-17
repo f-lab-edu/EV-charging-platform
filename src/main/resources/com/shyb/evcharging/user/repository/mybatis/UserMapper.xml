@@ -9,10 +9,16 @@
         values (#{name}, #{password}, #{phone}, #{email})
     </insert>
 
-    <select id="findById" resultType="User">
-        select id, name, email
+    <select id="findById" resultType="UserResponseDto">
+        select id, name, phone, email
         from users
         where id = #{id}
+    </select>
+
+    <select id="findByEmail" resultType="UserResponseDto">
+        select id, name, phone, email
+        from users
+        where email = #{email}
     </select>
 
     <select id="findAll" resultType="User">

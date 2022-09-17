@@ -1,6 +1,7 @@
 package com.shyb.evcharging.user.repository.mybatis;
 
 import com.shyb.evcharging.user.domain.User;
+import com.shyb.evcharging.user.dto.UserResponseDto;
 import com.shyb.evcharging.user.repository.UserRepository;
 import com.shyb.evcharging.user.repository.UserSearchCond;
 import java.util.List;
@@ -36,12 +37,23 @@ public class MyBatisUserRepository implements UserRepository {
      * @return 조회된 사용자
      */
     @Override
-    public Optional<User> findById(Long id) {
+    public Optional<UserResponseDto> findById(Long id) {
         return userMapper.findById(id);
     }
 
     @Override
-    public List<User> findAll(UserSearchCond cond) {
+    public List<UserResponseDto> findAll(UserSearchCond cond) {
         return userMapper.findAll(cond);
+    }
+
+    /**
+     * 이메일을 통해 가입된 사용자를 조회합니다.
+     *
+     * @param email 조회할 사용자 이메일
+     * @return 조회된 사용자
+     */
+    @Override
+    public Optional<UserResponseDto> findByEmail(String email) {
+        return userMapper.findByEmail(email);
     }
 }
