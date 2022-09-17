@@ -25,7 +25,7 @@ public class UserService {
      * @param user 생성 요청 사용자 정보
      * @eturn 등록된 사용자
      */
-    public User save(UserRequestDto user) {
+    public UserResponseDto save(UserRequestDto user) {
         return userRepository.save(user.toEntity());
     }
 

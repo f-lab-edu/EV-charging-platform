@@ -25,9 +25,9 @@ public class MyBatisUserRepository implements UserRepository {
      * @return 등록된 사용자
      */
     @Override
-    public User save(User user) {
+    public UserResponseDto save(User user) {
         userMapper.save(user);
-        return user;
+        return new UserResponseDto(user.getId(), user.getName(), user.getPhone(), user.getEmail());
     }
 
     /**

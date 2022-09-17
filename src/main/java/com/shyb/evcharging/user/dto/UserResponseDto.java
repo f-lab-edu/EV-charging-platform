@@ -2,6 +2,7 @@ package com.shyb.evcharging.user.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Builder;
 
 
 /**
@@ -19,6 +20,7 @@ public class UserResponseDto {
 
     private String email;
 
+    @Builder
     public UserResponseDto(Long id, String name, String phone, String email) {
         this.id = id;
         this.name = name;

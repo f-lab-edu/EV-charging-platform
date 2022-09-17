@@ -18,7 +18,7 @@ public class UserRequestDto {
 
     @NotBlank(message="이름을 입력해주세요.")
     @Size(max=20, message="이름의 최대 길이는 20자 입니다.")
-    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "이름은 영어 소문자, 대문자, 숫자로만 이루어져야 합니다.")
+    @Pattern(regexp = "^[가-힇]+$", message = "이름은 한글로만 이루어져야 합니다.")
     private String name;
 
     private String password;

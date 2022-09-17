@@ -4,6 +4,7 @@ import com.shyb.evcharging.user.application.UserService;
 import com.shyb.evcharging.user.domain.User;
 import com.shyb.evcharging.user.dto.EmailDuplicateCheckRequestDto;
 import com.shyb.evcharging.user.dto.UserRequestDto;
+import com.shyb.evcharging.user.dto.UserResponseDto;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class UserController {
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public User save(@RequestBody @Valid UserRequestDto user) {
+    public UserResponseDto save(@RequestBody @Valid UserRequestDto user) {
         return userService.save(user);
     }
 
