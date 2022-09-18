@@ -89,7 +89,6 @@ public class UserService {
             userRepository.update(id, userModifyRequestDto);
         }
 
-        return userRepository.findById(id)
-            .orElseThrow(UserNotFoundException::new);
+        return findById(id);
     }
 }

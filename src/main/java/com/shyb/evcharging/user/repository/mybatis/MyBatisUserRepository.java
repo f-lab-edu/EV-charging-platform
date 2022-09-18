@@ -60,7 +60,7 @@ public class MyBatisUserRepository implements UserRepository {
 
 
     @Override
-    public void update(Long id, UserModifyRequestDto userModifyRequestDto) {
-        userMapper.update(id, userModifyRequestDto);
+    public Long update(Long id, UserModifyRequestDto userModifyRequestDto) {
+        return userMapper.update(id, userModifyRequestDto);
     }
 }

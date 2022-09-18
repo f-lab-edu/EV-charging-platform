@@ -11,5 +11,5 @@ public interface UserRepository {
     Optional<UserResponseDto> findById(Long id);
     List<UserResponseDto> findAll(UserSearchCond cond);
     Optional<UserResponseDto> findByEmail(String email);
-    void update(Long id, UserModifyRequestDto user);
+    Long update(Long id, UserModifyRequestDto user);
 }

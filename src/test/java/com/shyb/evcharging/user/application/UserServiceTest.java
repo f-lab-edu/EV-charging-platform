@@ -1,15 +1,17 @@
 package com.shyb.evcharging.user.application;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.shyb.evcharging.user.domain.User;
 import com.shyb.evcharging.user.dto.EmailDuplicateCheckRequestDto;
+import com.shyb.evcharging.user.dto.UserModifyRequestDto;
 import com.shyb.evcharging.user.dto.UserRequestDto;
 import com.shyb.evcharging.user.dto.UserResponseDto;
 import com.shyb.evcharging.user.exception.EmailDuplicateException;
+import com.shyb.evcharging.user.exception.PasswordMisMatchException;
+import com.shyb.evcharging.user.exception.UserNotFoundException;
 import com.shyb.evcharging.user.repository.UserRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +37,9 @@ class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
+    Long USER_ID = 1L;
+    Long USER_ID_NOT_STORED = 9999L;
+
     String VALID_NAME = "홍길동";
 
     String VALID_PHONE = "010-1234-5678";
@@ -49,10 +54,12 @@ class UserServiceTest {
 
     UserResponseDto userResponseDto;
     UserRequestDto userRequestDTO;
+    UserRequestDto userRequestDTOWithPasswordMismatch;
 
     @BeforeEach
     void setUp() {
-        userResponseDto = UserResponseDto.builder().id(1L)
+        userResponseDto = UserResponseDto.builder()
+            .id(USER_ID)
             .name(VALID_NAME)
             .phone(VALID_PHONE)
             .email(VALID_EMAIL)
@@ -64,6 +71,14 @@ class UserServiceTest {
             .email(VALID_EMAIL)
             .password(PASSWORD)
             .confirmPassword(CONFIRM_PASSWORD)
+            .build();
+
+        userRequestDTOWithPasswordMismatch = UserRequestDto.builder()
+            .name(VALID_NAME)
+            .phone(VALID_PHONE)
+            .email(VALID_EMAIL)
+            .password(PASSWORD)
+            .confirmPassword(CONFIRM_PASSWORD_WITH_MISMATCH)
             .build();
     }
 
@@ -100,6 +115,19 @@ class UserServiceTest {
                 verify(userRepository).save(any(User.class));
             }
         }
+
+        @Nested
+        @DisplayName("패스워드와 패스워드 확인에 입력값이 다른 경우")
+        class Context_save_user_with_invalid_passwords {
+
+            @DisplayName("PasswordMisMatchException 예외를 던진다.")
+            @Test
+            void save_user_with_invalid_passwords() {
+                // when, then
+                assertThatThrownBy(() -> userService.save(userRequestDTOWithPasswordMismatch))
+                    .isInstanceOf(PasswordMisMatchException.class);
+            }
+        }
     }
 
     @Nested
@@ -133,5 +161,51 @@ class UserServiceTest {
             verify(userRepository).findByEmail(EXISTING_EMAIL);
 
         }
+    }
+
+    @Nested
+    @DisplayName("update 메소드는")
+    class Context_update_user {
+
+        String UPDATE_NAME = "후후후";
+        String UPDATE_PHONE = "010-1234-5678";
+
+        @DisplayName("사용자가 있으면 사용자 정보를 수정한 후 리턴한다.")
+        @Test
+        void update_with_valid() {
+//            // given
+//            UserModifyRequestDto userModifyRequestDto = new UserModifyRequestDto();
+//            userModifyRequestDto.setName(UPDATE_NAME);
+//            userModifyRequestDto.setPhone(UPDATE_PHONE);
+//
+//            given(userRepository.findById(USER_ID))
+//                .willReturn(Optional.of(userResponseDto));
+//
+//            // when
+//            UserResponseDto updatedUser = userService.update(USER_ID, userModifyRequestDto);
+//
+//            // then
+//            assertThat(updatedUser.getName()).isEqualTo(UPDATE_NAME);
+//            assertThat(updatedUser.getPhone()).isEqualTo(UPDATE_PHONE);
+        }
+
+        @DisplayName("등록을 요청하는 사용자가 없는 경우 UserNotFoundException 예외를 던진다.")
+        @Test
+        void update_with_not_found_user() {
+            // given
+            UserModifyRequestDto userModifyRequestDto = new UserModifyRequestDto();
+            userModifyRequestDto.setName(UPDATE_NAME);
+            userModifyRequestDto.setPhone(UPDATE_PHONE);
+
+            given(userRepository.findById(USER_ID_NOT_STORED))
+                .willReturn(Optional.empty());
+
+            assertThatThrownBy(() -> userService.update(USER_ID_NOT_STORED, userModifyRequestDto))
+                .isInstanceOf(UserNotFoundException.class);
+
+            verify(userRepository).findById(USER_ID_NOT_STORED);
+        }
+
+
     }
 }

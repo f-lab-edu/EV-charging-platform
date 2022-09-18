@@ -20,6 +20,6 @@ public interface UserMapper {
 
     Optional<UserResponseDto> findByEmail(String email);
 
-    void update(Long id, @Param("userModifyRequestDto") UserModifyRequestDto userModifyRequestDto);
+    Long update(Long id, @Param("userModifyRequestDto") UserModifyRequestDto userModifyRequestDto);
 
 }
