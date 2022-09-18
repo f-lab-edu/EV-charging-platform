@@ -57,4 +57,15 @@ public class UserExceptionHandler {
 
         return new ErrorResponse(errors.get(0));
     }
+
+    /**
+     * 등록되지 않은 사용자를 조회하는 경우, 예외를 던집니다.
+     *
+     * @return 메시지가 담긴 응답
+     */
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleUserNotFoundException() {
+        return new ErrorResponse("등록되지 않은 사용자입니다.");
+    }
 }

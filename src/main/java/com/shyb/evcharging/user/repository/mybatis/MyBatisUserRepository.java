@@ -1,6 +1,7 @@
 package com.shyb.evcharging.user.repository.mybatis;
 
 import com.shyb.evcharging.user.domain.User;
+import com.shyb.evcharging.user.dto.UserModifyRequestDto;
 import com.shyb.evcharging.user.dto.UserResponseDto;
 import com.shyb.evcharging.user.repository.UserRepository;
 import com.shyb.evcharging.user.repository.UserSearchCond;
@@ -55,5 +56,11 @@ public class MyBatisUserRepository implements UserRepository {
     @Override
     public Optional<UserResponseDto> findByEmail(String email) {
         return userMapper.findByEmail(email);
+    }
+
+
+    @Override
+    public void update(Long id, UserModifyRequestDto userModifyRequestDto) {
+        userMapper.update(id, userModifyRequestDto);
     }
 }

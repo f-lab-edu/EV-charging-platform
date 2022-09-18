@@ -2,6 +2,7 @@ package com.shyb.evcharging.user.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -9,6 +10,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class User{
 
     /**
@@ -35,10 +37,6 @@ public class User{
      * 사용자 이메일
      */
     private String email;
-
-    public User() {
-
-    }
 
     @Builder
     public User(String name, String password, String phone, String email) {

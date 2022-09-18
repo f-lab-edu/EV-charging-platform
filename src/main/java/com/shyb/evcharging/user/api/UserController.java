@@ -3,12 +3,14 @@ package com.shyb.evcharging.user.api;
 import com.shyb.evcharging.user.application.UserService;
 import com.shyb.evcharging.user.domain.User;
 import com.shyb.evcharging.user.dto.EmailDuplicateCheckRequestDto;
+import com.shyb.evcharging.user.dto.UserModifyRequestDto;
 import com.shyb.evcharging.user.dto.UserRequestDto;
 import com.shyb.evcharging.user.dto.UserResponseDto;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,6 +53,20 @@ public class UserController {
     }
 
     /**
+     * 사용자 정보를 업데이트 합니다.
+     *
+     * @param id 사용자 식별자
+     * @param userModifyRequestDto 사용자 정보 요청 DTO
+     * @return 정보 변경된 사용자 정보
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{id}")
+    public UserResponseDto update(@PathVariable Long id, @RequestBody @Valid UserModifyRequestDto userModifyRequestDto) {
+        return userService.update(id, userModifyRequestDto);
+    }
+
+
+    /**
      * 사용자를 조회합니다.
      *
      * @param id 조회할 사용자 식별자
@@ -58,12 +74,8 @@ public class UserController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/users/{id}")
-    public String find(@PathVariable("id") long id) {
-        if (userService.findById(id).isPresent()) {
-            return "find user";
-        } else {
-            return "no user";
-        }
+    public UserResponseDto find(@PathVariable("id") long id) {
+        return userService.findById(id);
     }
 
 }

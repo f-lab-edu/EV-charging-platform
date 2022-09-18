@@ -33,4 +33,14 @@
             </if>
         </where>
     </select>
+
+    <update id="update">
+        update users
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userModifyRequestDto.name !=null">name = #{userModifyRequestDto.name},</if>
+            <if test="userModifyRequestDto.phone !=null">phone = #{userModifyRequestDto.phone},</if>
+            <if test="userModifyRequestDto.password !=null">password = #{userModifyRequestDto.password}</if>
+        </trim>
+        where id = #{id}
+    </update>
 </mapper>
