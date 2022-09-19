@@ -36,10 +36,10 @@ public class UserService {
         if (!sameString) {
             throw new PasswordMisMatchException();
         }
-        user.passwordEncrypt();
 
+        String encryptedPassword = PasswordEncoder.encrypt(user.getPassword());
 
-        return userRepository.save(user.toEntity());
+        return userRepository.save(user.toEntity(encryptedPassword));
     }
 
     /**

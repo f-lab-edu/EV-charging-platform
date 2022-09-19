@@ -43,14 +43,10 @@ public class UserRequestDto {
         this.email = email;
     }
 
-    public void passwordEncrypt() {
-        this.password = PasswordEncoder.encrypt(this.password);
-    }
-
-    public User toEntity() {
+    public User toEntity(String encryptedPassword) {
         return User.builder()
             .name(this.getName())
-            .password(this.getPassword())
+            .password(encryptedPassword)
             .phone(this.getPhone())
             .email(this.getEmail())
             .build();
