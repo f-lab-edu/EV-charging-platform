@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -73,7 +73,7 @@ public class UserController {
      * @return 조회된 사용자
      */
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public UserResponseDto find(@PathVariable("id") long id) {
         return userService.findById(id);
     }
