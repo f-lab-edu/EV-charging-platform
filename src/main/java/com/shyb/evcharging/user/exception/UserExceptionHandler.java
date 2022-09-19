@@ -56,7 +56,9 @@ public class UserExceptionHandler {
             .map(DefaultMessageSourceResolvable::getDefaultMessage)
             .collect(Collectors.toList());
 
-        return new ErrorResponseDto(errors.get(0));
+        String errorJoining = String.join("/", errors);
+
+        return new ErrorResponseDto(errorJoining);
     }
 
     /**
