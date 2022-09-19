@@ -1,6 +1,6 @@
 package com.shyb.evcharging.user.exception;
 
-import com.shyb.evcharging.user.dto.ErrorResponse;
+import com.shyb.evcharging.user.dto.ErrorResponseDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.ConstraintViolationException;
@@ -26,8 +26,8 @@ public class UserExceptionHandler {
      */
     @ExceptionHandler(PasswordMisMatchException.class)
     @ResponseStatus(code= HttpStatus.BAD_REQUEST)
-    public ErrorResponse handlePasswordMismatchException() {
-        return new ErrorResponse("패스워드와 패스워드 확인에 입력된 패스워드가 일치하지 않습니다.");
+    public ErrorResponseDto handlePasswordMismatchException() {
+        return new ErrorResponseDto("패스워드와 패스워드 확인에 입력된 패스워드가 일치하지 않습니다.");
     }
 
     /**
@@ -37,8 +37,8 @@ public class UserExceptionHandler {
      */
     @ExceptionHandler(EmailDuplicateException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleEmailDuplicateException() {
-        return new ErrorResponse("이미 가입된 이메일입니다.");
+    public ErrorResponseDto handleEmailDuplicateException() {
+        return new ErrorResponseDto("이미 가입된 이메일입니다.");
     }
 
     /**
@@ -49,14 +49,14 @@ public class UserExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(code= HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+    public ErrorResponseDto handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult()
             .getFieldErrors()
             .stream()
             .map(DefaultMessageSourceResolvable::getDefaultMessage)
             .collect(Collectors.toList());
 
-        return new ErrorResponse(errors.get(0));
+        return new ErrorResponseDto(errors.get(0));
     }
 
     /**
@@ -67,8 +67,8 @@ public class UserExceptionHandler {
      */
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(code= HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleMethodArgumentNotValid(ConstraintViolationException ex) {
-        return new ErrorResponse(ex.getMessage());
+    public ErrorResponseDto handleMethodArgumentNotValid(ConstraintViolationException ex) {
+        return new ErrorResponseDto(ex.getMessage());
     }
 
 
@@ -79,7 +79,7 @@ public class UserExceptionHandler {
      */
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleUserNotFoundException() {
-        return new ErrorResponse("등록되지 않은 사용자입니다.");
+    public ErrorResponseDto handleUserNotFoundException() {
+        return new ErrorResponseDto("등록되지 않은 사용자입니다.");
     }
 }
