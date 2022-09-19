@@ -7,8 +7,10 @@ import com.shyb.evcharging.user.dto.UserModifyRequestDto;
 import com.shyb.evcharging.user.dto.UserRequestDto;
 import com.shyb.evcharging.user.dto.UserResponseDto;
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
+@Validated
 public class UserController {
 
     private final UserService userService;
@@ -44,12 +47,12 @@ public class UserController {
     /**
      * 이메일 주소로 사용자 중복여부를 확인합니다.
      *
-     * @param email 이메일 중복 요청 DTO
+     * @param email 중복 확인 요청 이메일
      */
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/email/check")
-    public boolean checkEmailDuplicate(@RequestBody @Valid EmailDuplicateCheckRequestDto email) {
-        return userService.checkEmailDuplicate(email);
+    @GetMapping("/email/{email}/check")
+    public void checkEmailDuplicate(@PathVariable("email") @Email(message = "이메일 형식이 잘못되었습니다.") String email) {
+        userService.checkEmailDuplicate(email);
     }
 
     /**

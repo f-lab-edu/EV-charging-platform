@@ -3,6 +3,7 @@ package com.shyb.evcharging.user.exception;
 import com.shyb.evcharging.user.dto.ErrorResponse;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.ConstraintViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -57,6 +58,19 @@ public class UserExceptionHandler {
 
         return new ErrorResponse(errors.get(0));
     }
+
+    /**
+     * 입력값이 Spring Validation 조건에 맞지 않는 경우, 예외를 던집니다.
+     *
+     * @param ex MethodArgumentNotValidException 예외
+     * @return 메시지가 담긴 응답
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(code= HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMethodArgumentNotValid(ConstraintViolationException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
 
     /**
      * 등록되지 않은 사용자를 조회하는 경우, 예외를 던집니다.

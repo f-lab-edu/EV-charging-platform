@@ -29,11 +29,15 @@ public class UserService {
      * @eturn 등록된 사용자
      */
     public UserResponseDto save(UserRequestDto user) {
+
+        checkEmailDuplicate(user.getEmail());
+
         boolean sameString = CustomStringUtils.isSameString(user.getPassword(), user.getConfirmPassword());
         if (!sameString) {
             throw new PasswordMisMatchException();
         }
         user.passwordEncrypt();
+
 
         return userRepository.save(user.toEntity());
     }
@@ -45,13 +49,11 @@ public class UserService {
      * @param emailDuplicateCheckRequestDto 가입 요청된 이메일 DTO
      * @return 가입 가능한 이메일 주소인 경우 true를 리턴합니다.
      */
-    public boolean checkEmailDuplicate(EmailDuplicateCheckRequestDto emailDuplicateCheckRequestDto) {
-        String email = emailDuplicateCheckRequestDto.getEmail();
+    public void checkEmailDuplicate(String email) {
         Optional<UserResponseDto> user = userRepository.findByEmail(email);
         if (user.isPresent()) {
             throw new EmailDuplicateException();
         }
-        return true;
     }
 
     /**

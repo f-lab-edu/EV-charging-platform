@@ -1,11 +1,11 @@
 package com.shyb.evcharging.user.application;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.shyb.evcharging.user.domain.User;
-import com.shyb.evcharging.user.dto.EmailDuplicateCheckRequestDto;
 import com.shyb.evcharging.user.dto.UserModifyRequestDto;
 import com.shyb.evcharging.user.dto.UserRequestDto;
 import com.shyb.evcharging.user.dto.UserResponseDto;
@@ -135,16 +135,15 @@ class UserServiceTest {
     class Context_checkEmailDuplicate_method {
 
         @Test
-        @DisplayName("이메일 중복이 없는 경우 true를 리턴한다.")
+        @DisplayName("이메일 중복이 없는 경우 어떤 예외도 던지지 않는다.")
         void checkEmailDuplicateWithNoDuplicates() {
             // given
             given(userRepository.findByEmail(NOT_EXISTING_EMAIL)).willReturn(Optional.empty());
 
-            // when
-            boolean emailExist = userService.checkEmailDuplicate(new EmailDuplicateCheckRequestDto(NOT_EXISTING_EMAIL));
+            // when, then
+            assertThatCode(() -> userService.checkEmailDuplicate(NOT_EXISTING_EMAIL))
+                .doesNotThrowAnyException();
 
-            // then
-            assertThat(emailExist).isTrue();
             verify(userRepository).findByEmail(NOT_EXISTING_EMAIL);
         }
 
@@ -155,7 +154,7 @@ class UserServiceTest {
             given(userRepository.findByEmail(EXISTING_EMAIL)).willReturn(Optional.of(userResponseDto));
 
             // when, then
-            assertThatThrownBy(() -> userService.checkEmailDuplicate(new EmailDuplicateCheckRequestDto(EXISTING_EMAIL)))
+            assertThatThrownBy(() -> userService.checkEmailDuplicate(EXISTING_EMAIL))
                 .isInstanceOf(EmailDuplicateException.class);
 
             verify(userRepository).findByEmail(EXISTING_EMAIL);
