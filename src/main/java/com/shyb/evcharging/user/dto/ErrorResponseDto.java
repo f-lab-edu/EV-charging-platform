@@ -8,14 +8,14 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class ErrorResponse {
+public class ErrorResponseDto {
 
     /**
      * 예외 메시지
      */
     private String errorMessage;
 
-    public ErrorResponse(String errorMessage) {
+    public ErrorResponseDto(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 }
