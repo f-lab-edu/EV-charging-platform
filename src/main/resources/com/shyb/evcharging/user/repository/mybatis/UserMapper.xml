@@ -21,19 +21,6 @@
         where email = #{email}
     </select>
 
-    <select id="findAll" resultType="User">
-        select id, name, email
-        from users
-        <where>
-            <if test="name != null and name != ''">
-                and name like concat('%', #{name}, '%')
-            </if>
-            <if test="email != null and email != ''">
-                and email like concat('%', #{email}, '%')
-            </if>
-        </where>
-    </select>
-
     <update id="update">
         update users
         <trim prefix="set" suffixOverrides=",">

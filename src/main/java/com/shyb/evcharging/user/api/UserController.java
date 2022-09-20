@@ -1,8 +1,6 @@
 package com.shyb.evcharging.user.api;
 
 import com.shyb.evcharging.user.application.UserService;
-import com.shyb.evcharging.user.domain.User;
-import com.shyb.evcharging.user.dto.EmailDuplicateCheckRequestDto;
 import com.shyb.evcharging.user.dto.UserModifyRequestDto;
 import com.shyb.evcharging.user.dto.UserRequestDto;
 import com.shyb.evcharging.user.dto.UserResponseDto;
@@ -67,7 +65,6 @@ public class UserController {
     public UserResponseDto update(@PathVariable Long id, @RequestBody @Valid UserModifyRequestDto userModifyRequestDto) {
         return userService.update(id, userModifyRequestDto);
     }
-
 
     /**
      * 사용자를 조회합니다.

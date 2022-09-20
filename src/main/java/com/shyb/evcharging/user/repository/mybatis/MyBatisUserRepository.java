@@ -2,10 +2,7 @@ package com.shyb.evcharging.user.repository.mybatis;
 
 import com.shyb.evcharging.user.domain.User;
 import com.shyb.evcharging.user.dto.UserModifyRequestDto;
-import com.shyb.evcharging.user.dto.UserResponseDto;
 import com.shyb.evcharging.user.repository.UserRepository;
-import com.shyb.evcharging.user.repository.UserSearchCond;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -40,11 +37,6 @@ public class MyBatisUserRepository implements UserRepository {
     @Override
     public Optional<User> findById(Long id) {
         return userMapper.findById(id);
-    }
-
-    @Override
-    public List<User> findAll(UserSearchCond cond) {
-        return userMapper.findAll(cond);
     }
 
     /**

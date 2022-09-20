@@ -8,10 +8,8 @@ import com.shyb.evcharging.user.exception.EmailDuplicateException;
 import com.shyb.evcharging.user.exception.PasswordMisMatchException;
 import com.shyb.evcharging.user.exception.UserNotFoundException;
 import com.shyb.evcharging.user.repository.UserRepository;
-import com.shyb.evcharging.user.repository.UserSearchCond;
 import com.shyb.evcharging.utils.CustomStringUtils;
 import com.shyb.evcharging.utils.PasswordEncoder;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -77,10 +75,6 @@ public class UserService {
             .phone(user.getPhone())
             .email(user.getEmail())
             .build();
-    }
-
-    public List<User> findAll(UserSearchCond userSearch) {
-        return userRepository.findAll(userSearch);
     }
 
     /**
