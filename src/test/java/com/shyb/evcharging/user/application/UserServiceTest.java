@@ -58,6 +58,7 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
+
         userResponseDto = UserResponseDto.builder()
             .id(USER_ID)
             .name(VALID_NAME)
@@ -96,7 +97,7 @@ class UserServiceTest {
                 // given
                 given(userRepository.save(any(User.class))).will(invocation -> {
                     User source = invocation.getArgument(0);
-                    return UserResponseDto.builder()
+                    return User.builder()
                         .id(1L)
                         .name(source.getName())
                         .phone(source.getPhone())
@@ -151,7 +152,14 @@ class UserServiceTest {
         @DisplayName("이메일 중복이 있는 경우, 예외를 던진다.")
         void checkEmailDuplicateWitDuplicates() {
             //given
-            given(userRepository.findByEmail(EXISTING_EMAIL)).willReturn(Optional.of(userResponseDto));
+            User user = User.builder()
+                .id(1L)
+                .name("tempName")
+                .email("tempEmail")
+                .password("tempPassword")
+                .build();
+
+            given(userRepository.findByEmail(EXISTING_EMAIL)).willReturn(Optional.of(user));
 
             // when, then
             assertThatThrownBy(() -> userService.checkEmailDuplicate(EXISTING_EMAIL))
@@ -177,7 +185,15 @@ class UserServiceTest {
             userModifyRequestDto.setName(UPDATE_NAME);
             userModifyRequestDto.setPhone(UPDATE_PHONE);
 
-            UserResponseDto updatedUserResponseDto = UserResponseDto.builder()
+            User user = User.builder()
+                .id(1L)
+                .name("tempName")
+                .email("tempEmail")
+                .phone("tempPhone")
+                .password("tempPassword")
+                .build();
+
+            User newUser = User.builder()
                 .id(USER_ID)
                 .name(UPDATE_NAME)
                 .phone(UPDATE_PHONE)
@@ -185,8 +201,8 @@ class UserServiceTest {
                 .build();
 
             given(userRepository.findById(USER_ID))
-                .willReturn(Optional.of(userResponseDto))
-                .willReturn(Optional.of(updatedUserResponseDto));
+                .willReturn(Optional.of(user))
+                .willReturn(Optional.of(newUser));
 
             // when
             UserResponseDto updatedUser = userService.update(USER_ID, userModifyRequestDto);

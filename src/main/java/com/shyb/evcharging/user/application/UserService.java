@@ -1,6 +1,6 @@
 package com.shyb.evcharging.user.application;
 
-import com.shyb.evcharging.user.dto.EmailDuplicateCheckRequestDto;
+import com.shyb.evcharging.user.domain.User;
 import com.shyb.evcharging.user.dto.UserModifyRequestDto;
 import com.shyb.evcharging.user.dto.UserRequestDto;
 import com.shyb.evcharging.user.dto.UserResponseDto;
@@ -39,7 +39,14 @@ public class UserService {
 
         String encryptedPassword = PasswordEncoder.encrypt(user.getPassword());
 
-        return userRepository.save(user.toEntity(encryptedPassword));
+        User savedUser = userRepository.save(user.toEntity(encryptedPassword));
+
+        return UserResponseDto.builder()
+            .id(savedUser.getId())
+            .name(savedUser.getName())
+            .phone(savedUser.getPhone())
+            .email(savedUser.getEmail())
+            .build();
     }
 
     /**
@@ -50,7 +57,7 @@ public class UserService {
      * @return 가입 가능한 이메일 주소인 경우 true를 리턴합니다.
      */
     public void checkEmailDuplicate(String email) {
-        Optional<UserResponseDto> user = userRepository.findByEmail(email);
+        Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent()) {
             throw new EmailDuplicateException();
         }
@@ -63,10 +70,16 @@ public class UserService {
      * @return 조회된 사용자
      */
     public UserResponseDto findById(Long id) {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return UserResponseDto.builder()
+            .id(user.getId())
+            .name(user.getName())
+            .phone(user.getPhone())
+            .email(user.getEmail())
+            .build();
     }
 
-    public List<UserResponseDto> findAll(UserSearchCond userSearch) {
+    public List<User> findAll(UserSearchCond userSearch) {
         return userRepository.findAll(userSearch);
     }
 

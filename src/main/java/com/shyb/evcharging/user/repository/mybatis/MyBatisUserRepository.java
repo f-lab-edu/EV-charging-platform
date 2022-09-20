@@ -26,9 +26,9 @@ public class MyBatisUserRepository implements UserRepository {
      * @return 등록된 사용자
      */
     @Override
-    public UserResponseDto save(User user) {
+    public User save(User user) {
         userMapper.save(user);
-        return new UserResponseDto(user.getId(), user.getName(), user.getPhone(), user.getEmail());
+        return user;
     }
 
     /**
@@ -38,12 +38,12 @@ public class MyBatisUserRepository implements UserRepository {
      * @return 조회된 사용자
      */
     @Override
-    public Optional<UserResponseDto> findById(Long id) {
+    public Optional<User> findById(Long id) {
         return userMapper.findById(id);
     }
 
     @Override
-    public List<UserResponseDto> findAll(UserSearchCond cond) {
+    public List<User> findAll(UserSearchCond cond) {
         return userMapper.findAll(cond);
     }
 
@@ -54,7 +54,7 @@ public class MyBatisUserRepository implements UserRepository {
      * @return 조회된 사용자
      */
     @Override
-    public Optional<UserResponseDto> findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         return userMapper.findByEmail(email);
     }
 

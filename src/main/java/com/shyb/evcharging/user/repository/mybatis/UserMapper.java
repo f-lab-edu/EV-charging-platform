@@ -14,11 +14,11 @@ public interface UserMapper {
 
     void save(User user);
 
-    List<UserResponseDto> findAll(UserSearchCond userSearch);
+    List<User> findAll(UserSearchCond userSearch);
 
-    Optional<UserResponseDto> findById(Long id);
+    Optional<User> findById(Long id);
 
-    Optional<UserResponseDto> findByEmail(String email);
+    Optional<User> findByEmail(String email);
 
     Long update(Long id, @Param("userModifyRequestDto") UserModifyRequestDto userModifyRequestDto);
 
