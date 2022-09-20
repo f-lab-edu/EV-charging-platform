@@ -172,20 +172,28 @@ class UserServiceTest {
         @DisplayName("사용자가 있으면 사용자 정보를 수정한 후 리턴한다.")
         @Test
         void update_with_valid() {
-//            // given
-//            UserModifyRequestDto userModifyRequestDto = new UserModifyRequestDto();
-//            userModifyRequestDto.setName(UPDATE_NAME);
-//            userModifyRequestDto.setPhone(UPDATE_PHONE);
-//
-//            given(userRepository.findById(USER_ID))
-//                .willReturn(Optional.of(userResponseDto));
-//
-//            // when
-//            UserResponseDto updatedUser = userService.update(USER_ID, userModifyRequestDto);
-//
-//            // then
-//            assertThat(updatedUser.getName()).isEqualTo(UPDATE_NAME);
-//            assertThat(updatedUser.getPhone()).isEqualTo(UPDATE_PHONE);
+            // given
+            UserModifyRequestDto userModifyRequestDto = new UserModifyRequestDto();
+            userModifyRequestDto.setName(UPDATE_NAME);
+            userModifyRequestDto.setPhone(UPDATE_PHONE);
+
+            UserResponseDto updatedUserResponseDto = UserResponseDto.builder()
+                .id(USER_ID)
+                .name(UPDATE_NAME)
+                .phone(UPDATE_PHONE)
+                .email(VALID_EMAIL)
+                .build();
+
+            given(userRepository.findById(USER_ID))
+                .willReturn(Optional.of(userResponseDto))
+                .willReturn(Optional.of(updatedUserResponseDto));
+
+            // when
+            UserResponseDto updatedUser = userService.update(USER_ID, userModifyRequestDto);
+
+            // then
+            assertThat(updatedUser.getName()).isEqualTo(UPDATE_NAME);
+            assertThat(updatedUser.getPhone()).isEqualTo(UPDATE_PHONE);
         }
 
         @DisplayName("등록을 요청하는 사용자가 없는 경우 UserNotFoundException 예외를 던진다.")

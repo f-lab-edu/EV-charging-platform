@@ -46,7 +46,7 @@ public class UserService {
      * 가입 요청된 이메일 중복 여부를 확인합니다.
      * 만약 동일하지 않다면 예외를 던집니다.
      *
-     * @param emailDuplicateCheckRequestDto 가입 요청된 이메일 DTO
+     * @param email 가입 요청된 이메일
      * @return 가입 가능한 이메일 주소인 경우 true를 리턴합니다.
      */
     public void checkEmailDuplicate(String email) {
