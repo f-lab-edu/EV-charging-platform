@@ -176,16 +176,21 @@ class UserServiceTest {
 
         String UPDATE_NAME = "후후후";
         String UPDATE_PHONE = "010-1234-5678";
+        String UPDATE_PASSWORD = "12345";
+        String UPDATE_CONFIRM_PASSWORD = "12345";
+        UserModifyRequestDto userModifyRequestDto;
+        User user;
+        User newUser;
 
-        @DisplayName("사용자가 있으면 사용자 정보를 수정한 후 리턴한다.")
-        @Test
-        void update_with_valid() {
-            // given
-            UserModifyRequestDto userModifyRequestDto = new UserModifyRequestDto();
+        @BeforeEach
+        void setUp() {
+            userModifyRequestDto = new UserModifyRequestDto();
             userModifyRequestDto.setName(UPDATE_NAME);
             userModifyRequestDto.setPhone(UPDATE_PHONE);
+            userModifyRequestDto.setPassword(UPDATE_PASSWORD);
+            userModifyRequestDto.setConfirmPassword(UPDATE_CONFIRM_PASSWORD);
 
-            User user = User.builder()
+            user = User.builder()
                 .id(1L)
                 .name("tempName")
                 .email("tempEmail")
@@ -193,13 +198,18 @@ class UserServiceTest {
                 .password("tempPassword")
                 .build();
 
-            User newUser = User.builder()
+            newUser = User.builder()
                 .id(USER_ID)
                 .name(UPDATE_NAME)
                 .phone(UPDATE_PHONE)
                 .email(VALID_EMAIL)
                 .build();
+        }
 
+        @DisplayName("사용자가 있으면 사용자 정보를 수정한 후 리턴한다.")
+        @Test
+        void update_with_valid() {
+            // given
             given(userRepository.findById(USER_ID))
                 .willReturn(Optional.of(user))
                 .willReturn(Optional.of(newUser));
@@ -216,10 +226,6 @@ class UserServiceTest {
         @Test
         void update_with_not_found_user() {
             // given
-            UserModifyRequestDto userModifyRequestDto = new UserModifyRequestDto();
-            userModifyRequestDto.setName(UPDATE_NAME);
-            userModifyRequestDto.setPhone(UPDATE_PHONE);
-
             given(userRepository.findById(USER_ID_NOT_STORED))
                 .willReturn(Optional.empty());
 
@@ -227,6 +233,17 @@ class UserServiceTest {
                 .isInstanceOf(UserNotFoundException.class);
 
             verify(userRepository).findById(USER_ID_NOT_STORED);
+        }
+
+        @DisplayName("변경 패스워드와 패스워드 확인이 모두 null이 아니며 동일하지 않은 경우 PasswordMismatch 예외를 던진다.")
+        @Test
+        void update_with_different_passwords() {
+
+            userModifyRequestDto.setPassword("12345");
+            userModifyRequestDto.setConfirmPassword("11111");
+
+            assertThatThrownBy(() -> userService.update(USER_ID, userModifyRequestDto))
+                .isInstanceOf(PasswordMisMatchException.class);
         }
 
 
