@@ -39,3 +39,5 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+// h2 db 설정, 테스트 복구
