@@ -15,6 +15,6 @@ public interface UserMapper {
 
     Optional<User> findByEmail(String email);
 
-    Long update(Long id, @Param("userModifyRequestDto") UserModifyRequestDto userModifyRequestDto);
+    Long update(Long id, @Param("updateUser") User updateUser);
 
 }

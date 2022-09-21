@@ -86,16 +86,23 @@ public class UserService {
      */
     public UserResponseDto update(Long id, UserModifyRequestDto userModifyRequestDto) {
 
+        String encryptPassword = null;
         if (userModifyRequestDto.getPassword() != null && userModifyRequestDto.getConfirmPassword() != null) {
             boolean sameString = CustomStringUtils.isSameString(userModifyRequestDto.getPassword(), userModifyRequestDto.getConfirmPassword());
             if (!sameString) {
                 throw new PasswordMisMatchException();
             }
-            userModifyRequestDto.setPassword(PasswordEncoder.encrypt(userModifyRequestDto.getPassword()));
+            encryptPassword = PasswordEncoder.encrypt(userModifyRequestDto.getPassword());
         }
 
+        User updateUser = User.builder()
+            .name(userModifyRequestDto.getName())
+            .password(encryptPassword)
+            .phone(userModifyRequestDto.getPhone())
+            .build();
+
         if (findById(id) != null) {
-            userRepository.update(id, userModifyRequestDto);
+            userRepository.update(id, updateUser);
         }
 
         return findById(id);

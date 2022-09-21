@@ -1,5 +1,7 @@
 package com.shyb.evcharging.user.application;
 
+import static com.shyb.evcharging.utils.UserFixture.*;
+
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,50 +39,15 @@ class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
-    Long USER_ID = 1L;
-    Long USER_ID_NOT_STORED = 9999L;
-
-    String VALID_NAME = "홍길동";
-
-    String VALID_PHONE = "010-1234-5678";
-
-    String VALID_EMAIL = "abcd@gmail.com";
-    String EXISTING_EMAIL = "existing@gmail.com";
-    String NOT_EXISTING_EMAIL = "non_exsting@gmail.com";
-
-    String PASSWORD = "12345";
-    String CONFIRM_PASSWORD = "12345";
-    String CONFIRM_PASSWORD_WITH_MISMATCH = "55555";
-
     UserResponseDto userResponseDto;
     UserRequestDto userRequestDTO;
     UserRequestDto userRequestDTOWithPasswordMismatch;
 
     @BeforeEach
     void setUp() {
-
-        userResponseDto = UserResponseDto.builder()
-            .id(USER_ID)
-            .name(VALID_NAME)
-            .phone(VALID_PHONE)
-            .email(VALID_EMAIL)
-            .build();
-
-        userRequestDTO = UserRequestDto.builder()
-            .name(VALID_NAME)
-            .phone(VALID_PHONE)
-            .email(VALID_EMAIL)
-            .password(PASSWORD)
-            .confirmPassword(CONFIRM_PASSWORD)
-            .build();
-
-        userRequestDTOWithPasswordMismatch = UserRequestDto.builder()
-            .name(VALID_NAME)
-            .phone(VALID_PHONE)
-            .email(VALID_EMAIL)
-            .password(PASSWORD)
-            .confirmPassword(CONFIRM_PASSWORD_WITH_MISMATCH)
-            .build();
+        userResponseDto = RESPONSE;
+        userRequestDTO = VALID_REQUEST;
+        userRequestDTOWithPasswordMismatch = INVALID_WITH_DIFFERENT_PASSWORDS_REQUEST;
     }
 
     @Nested
@@ -174,36 +141,15 @@ class UserServiceTest {
     @DisplayName("update 메소드는")
     class Context_update_user {
 
-        String UPDATE_NAME = "후후후";
-        String UPDATE_PHONE = "010-1234-5678";
-        String UPDATE_PASSWORD = "12345";
-        String UPDATE_CONFIRM_PASSWORD = "12345";
         UserModifyRequestDto userModifyRequestDto;
-        User user;
-        User newUser;
+        User existingUser;
+        User updatedUser;
 
         @BeforeEach
         void setUp() {
-            userModifyRequestDto = new UserModifyRequestDto();
-            userModifyRequestDto.setName(UPDATE_NAME);
-            userModifyRequestDto.setPhone(UPDATE_PHONE);
-            userModifyRequestDto.setPassword(UPDATE_PASSWORD);
-            userModifyRequestDto.setConfirmPassword(UPDATE_CONFIRM_PASSWORD);
-
-            user = User.builder()
-                .id(1L)
-                .name("tempName")
-                .email("tempEmail")
-                .phone("tempPhone")
-                .password("tempPassword")
-                .build();
-
-            newUser = User.builder()
-                .id(USER_ID)
-                .name(UPDATE_NAME)
-                .phone(UPDATE_PHONE)
-                .email(VALID_EMAIL)
-                .build();
+            userModifyRequestDto = UPDATE_REQUEST;
+            existingUser = EXISTING_USER;
+            updatedUser = UPDATED_USER;
         }
 
         @DisplayName("사용자가 있으면 사용자 정보를 수정한 후 리턴한다.")
@@ -211,8 +157,8 @@ class UserServiceTest {
         void update_with_valid() {
             // given
             given(userRepository.findById(USER_ID))
-                .willReturn(Optional.of(user))
-                .willReturn(Optional.of(newUser));
+                .willReturn(Optional.of(existingUser))
+                .willReturn(Optional.of(updatedUser));
 
             // when
             UserResponseDto updatedUser = userService.update(USER_ID, userModifyRequestDto);
@@ -238,14 +184,8 @@ class UserServiceTest {
         @DisplayName("변경 패스워드와 패스워드 확인이 모두 null이 아니며 동일하지 않은 경우 PasswordMismatch 예외를 던진다.")
         @Test
         void update_with_different_passwords() {
-
-            userModifyRequestDto.setPassword("12345");
-            userModifyRequestDto.setConfirmPassword("11111");
-
-            assertThatThrownBy(() -> userService.update(USER_ID, userModifyRequestDto))
+            assertThatThrownBy(() -> userService.update(USER_ID, UPDATE_WITH_DIFFERENT_PASSWORDS_REQUEST))
                 .isInstanceOf(PasswordMisMatchException.class);
         }
-
-
     }
 }
