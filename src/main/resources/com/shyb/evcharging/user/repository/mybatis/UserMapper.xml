@@ -24,9 +24,9 @@
     <update id="update">
         update users
         <trim prefix="set" suffixOverrides=",">
-            <if test="userModifyRequestDto.name !=null">name = #{userModifyRequestDto.name},</if>
-            <if test="userModifyRequestDto.phone !=null">phone = #{userModifyRequestDto.phone},</if>
-            <if test="userModifyRequestDto.password !=null">password = #{userModifyRequestDto.password}</if>
+            <if test="updateUser.name !=null">name = #{updateUser},</if>
+            <if test="updateUser.phone !=null">phone = #{updateUser},</if>
+            <if test="updateUser.password !=null">password = #{updateUser}</if>
         </trim>
         where id = #{id}
     </update>

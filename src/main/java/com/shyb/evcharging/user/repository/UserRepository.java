@@ -8,5 +8,5 @@ public interface UserRepository {
     User save(User user);
     Optional<User> findById(Long id);
     Optional<User> findByEmail(String email);
-    Long update(Long id, UserModifyRequestDto user);
+    Long update(Long id, User user);
 }
