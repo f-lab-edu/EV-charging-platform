@@ -1,19 +1,20 @@
 package com.shyb.evcharging.user.dto;
 
 import com.shyb.evcharging.user.domain.User;
-import com.shyb.evcharging.utils.PasswordEncoder;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 사용자 등록 요청 DTO 입니다.
  */
-@Getter
+@Data
+@NoArgsConstructor
 public class UserRequestDto {
 
     @NotBlank(message="이름을 입력해주세요.")
@@ -22,9 +23,11 @@ public class UserRequestDto {
     private String name;
 
     @NotNull(message = "패스워드를 입력해주세요.")
+    @NotBlank(message="패스워드를 입력해주세요.")
     private String password;
 
     @NotNull(message = "패스워드 확인란을 입력해주세요.")
+    @NotBlank(message="패스워드를 입력해주세요.")
     private String confirmPassword;
 
     @Pattern(regexp = "010-[0-9]{4}-[0-9]{4}", message = "010-XXXX-XXXX 형식으로 입력해주세요.")
