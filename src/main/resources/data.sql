@@ -35,4 +35,3 @@ CREATE TABLE IF NOT EXISTS users
     updated_at TIMESTAMP,
     is_deleted BOOLEAN DEFAULT FALSE
 );
-

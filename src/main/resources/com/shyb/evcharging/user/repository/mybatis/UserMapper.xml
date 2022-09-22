@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 인터페이스 지정-->
+<mapper  namespace="com.shyb.evcharging.user.repository.mybatis.UserMapper">
+    <insert id ="save" useGeneratedKeys="true" keyProperty="id">
+        insert into users (name, password, phone, email)
+        values (#{name}, #{password}, #{phone}, #{email})
+    </insert>
+
+    <select id="findById" resultType="User">
+        select id, name, password, phone, email
+        from users
+        where id = #{id}
+    </select>
+
+    <select id="findByEmail" resultType="User">
+        select id, name, password, phone, email
+        from users
+        where email = #{email}
+    </select>
+
+    <update id="update">
+        update users
+        <trim prefix="set" suffixOverrides=",">
+            <if test="updateUser.name !=null">name = #{updateUser},</if>
+            <if test="updateUser.phone !=null">phone = #{updateUser},</if>
+            <if test="updateUser.password !=null">password = #{updateUser}</if>
+        </trim>
+        where id = #{id}
+    </update>
+</mapper>
