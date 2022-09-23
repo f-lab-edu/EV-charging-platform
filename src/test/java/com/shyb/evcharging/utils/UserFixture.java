@@ -10,7 +10,6 @@ public class UserFixture {
     public static Long USER_ID_NOT_STORED = 9999L;
 
     public static String VALID_NAME = "홍길동";
-    public static String BLANK_NAME = "";
 
     public static String VALID_PHONE = "010-1234-5678";
 
@@ -122,6 +121,26 @@ public class UserFixture {
         .password(UPDATE_PASSWORD)
         .confirmPassword(UPDATE_CONFIRM_PASSWORD)
         .build();
+
+    public static final UserModifyRequestDto updateRequestWithInvalidName(String invalidName) {
+        return UserModifyRequestDto
+            .builder()
+            .name(invalidName)
+            .phone(VALID_PHONE)
+            .password(PASSWORD)
+            .confirmPassword(CONFIRM_PASSWORD)
+            .build();
+    }
+
+    public static final UserModifyRequestDto updateRequestWithInvalidPhone(String invalidPhone) {
+        return UserModifyRequestDto
+            .builder()
+            .name(VALID_NAME)
+            .phone(invalidPhone)
+            .password(PASSWORD)
+            .confirmPassword(CONFIRM_PASSWORD)
+            .build();
+    }
 
     public static final UserModifyRequestDto UPDATE_WITH_DIFFERENT_PASSWORDS_REQUEST = UserModifyRequestDto
         .builder()

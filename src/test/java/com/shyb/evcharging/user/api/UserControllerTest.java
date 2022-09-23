@@ -4,6 +4,7 @@ import static com.shyb.evcharging.utils.MockMvcUtil.OBJECT_MAPPER;
 import static com.shyb.evcharging.utils.UserFixture.*;
 
 import com.shyb.evcharging.user.application.UserService;
+import com.shyb.evcharging.user.dto.UserModifyRequestDto;
 import com.shyb.evcharging.user.dto.UserRequestDto;
 import com.shyb.evcharging.user.dto.UserResponseDto;
 import com.shyb.evcharging.user.exception.EmailDuplicateException;
@@ -25,11 +26,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -235,36 +239,74 @@ class UserControllerTest {
     @Nested
     class Context_update_method {
 
-        @DisplayName("사용자 정보 변경 요청이 오면 사용자륿 변경하고 상태코드 200을 리턴한다.")
+        @DisplayName("사용자 정보 변경 요청이 오면 사용자를 변경하고 상태코드 200을 리턴한다.")
         @Test
-        void update_user() {
+        void update_user() throws Exception {
+            UserModifyRequestDto updateRequest = UPDATE_REQUEST;
 
+            given(userService.update(eq(USER_ID), any(UserModifyRequestDto.class)))
+                .will(invocation -> {
+                    Long id = invocation.getArgument(0);
+                    UserModifyRequestDto user = invocation.getArgument(1);
+                    return UserResponseDto.builder()
+                        .id(id)
+                        .name(user.getName())
+                        .phone(user.getPhone())
+                        .build();
+                });
+
+            ResultActions result = mockMvc.perform(
+                patch("/api/v1/users/" + USER_ID)
+                    .content(OBJECT_MAPPER.writeValueAsString(updateRequest))
+                    .contentType(MediaType.APPLICATION_JSON)
+            );
+
+            result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").exists())
+                .andExpect(jsonPath("$.name").value(updateRequest.getName()))
+                .andExpect(jsonPath("$.phone").exists())
+                .andExpect(jsonPath("$.phone").value(updateRequest.getPhone()));
         }
 
-        @DisplayName("입력된 이름이 한글이 아닌 다른 문자가 포함되면 예외를 던지고 상태코드 400를 리턴한다.")
-        @Test
-        void name_includes_invalid_character() {
+        @DisplayName("입력된 이름이 적절하지 않으면 에러 메시지와 상태코드 400를 리턴한다.")
+        @ParameterizedTest
+        @EmptySource
+        @ValueSource(strings = {"!@#", "hello", "자바java", "자바!!", "스프링spring!!", "이름은이십자를초과할수없습니다를테스트합니다"})
+        void name_includes_invalid_character(String invalidName) throws Exception{
+            // given
+            UserModifyRequestDto updateRequest = updateRequestWithInvalidName(invalidName);
 
-        }
+            ResultActions result = mockMvc.perform(
+                patch("/api/v1/users/" + USER_ID)
+                    .content(OBJECT_MAPPER.writeValueAsString(updateRequest))
+                    .contentType(MediaType.APPLICATION_JSON)
+            );
 
-        @DisplayName("입력된 이름이 20자가 초과되면 예외를 던지고 상태코드 400를 리턴한다.")
-        @Test
-        void name_length_exceeded() {
+            result
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errorMessage").exists());
 
         }
 
         @DisplayName("휴대폰 번호가 형식에 맞지 않게 전달되면 예외를 던지고 상태코드 400를 리턴한다.")
-        @Test
-        void phone_is_invalid() {
+        @ParameterizedTest
+        @EmptySource
+        @ValueSource(strings = {"01012341234", "010-123-1234", "010-@323-%@!!", "82-010-1234-1234"})
+        void phone_is_invalid(String invalidPhone) throws Exception {
+            // given
+            UserModifyRequestDto updateRequest = updateRequestWithInvalidPhone(invalidPhone);
 
+            ResultActions result = mockMvc.perform(
+                patch("/api/v1/users/" + USER_ID)
+                    .content(OBJECT_MAPPER.writeValueAsString(updateRequest))
+                    .contentType(MediaType.APPLICATION_JSON)
+            );
+
+            result
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errorMessage").exists());
         }
-
-        @DisplayName("id로 숫자가 아닌 다른 값이 전달되면 예외를 던지고 상태코드 400를 리턴한다.")
-        @Test
-        void type_of_id_is_invalid() {
-
-        }
-
     }
 
     @DisplayName("find 메소드는")
