@@ -45,14 +45,66 @@ public class UserFixture {
         .confirmPassword(CONFIRM_PASSWORD_WITH_MISMATCH)
         .build();
 
-    public static final UserRequestDto INVALID_NAME_REQUEST = UserRequestDto
-        .builder()
-        .name("")
-        .email("test@naver.com")
-        .phone("010-4453-8737")
-        .password("12345678")
-        .confirmPassword("12345678")
-        .build();
+
+    // invalid name request
+    public static final UserRequestDto createRequestWithInvalidName(String invalidName) {
+        return UserRequestDto
+            .builder()
+            .name(invalidName)
+            .email(VALID_EMAIL)
+            .phone(VALID_PHONE)
+            .password(PASSWORD)
+            .confirmPassword(CONFIRM_PASSWORD_WITH_MISMATCH)
+            .build();
+    }
+
+    // invalid email request
+    public static final UserRequestDto createRequestWithInvalidEmail(String invalidEmail) {
+        return UserRequestDto
+            .builder()
+            .name(VALID_NAME)
+            .email(invalidEmail)
+            .phone(VALID_PHONE)
+            .password(PASSWORD)
+            .confirmPassword(CONFIRM_PASSWORD_WITH_MISMATCH)
+            .build();
+    }
+
+    // invalid phone request
+    public static final UserRequestDto createRequestWithInvalidPhone(String invalidPhone) {
+        return UserRequestDto
+            .builder()
+            .name(VALID_NAME)
+            .email(VALID_EMAIL)
+            .phone(invalidPhone)
+            .password(PASSWORD)
+            .confirmPassword(CONFIRM_PASSWORD_WITH_MISMATCH)
+            .build();
+    }
+
+    // invalid password request
+    public static final UserRequestDto createRequestWithInvalidPassword(String invalidPassword) {
+        return UserRequestDto
+            .builder()
+            .name(VALID_NAME)
+            .email(VALID_EMAIL)
+            .phone(VALID_PHONE)
+            .password(invalidPassword)
+            .confirmPassword(CONFIRM_PASSWORD_WITH_MISMATCH)
+            .build();
+    }
+
+    // invalid confrom_password request
+    public static final UserRequestDto createRequestWithInvalidConfirmPassword(String invalidConfirmPassword) {
+        return UserRequestDto
+            .builder()
+            .name(VALID_NAME)
+            .email(VALID_EMAIL)
+            .phone(VALID_PHONE)
+            .password(PASSWORD)
+            .confirmPassword(invalidConfirmPassword)
+            .build();
+    }
 
     public static final UserResponseDto RESPONSE = UserResponseDto
         .builder()
@@ -70,6 +122,26 @@ public class UserFixture {
         .confirmPassword(UPDATE_CONFIRM_PASSWORD)
         .build();
 
+    public static final UserModifyRequestDto updateRequestWithInvalidName(String invalidName) {
+        return UserModifyRequestDto
+            .builder()
+            .name(invalidName)
+            .phone(VALID_PHONE)
+            .password(PASSWORD)
+            .confirmPassword(CONFIRM_PASSWORD)
+            .build();
+    }
+
+    public static final UserModifyRequestDto updateRequestWithInvalidPhone(String invalidPhone) {
+        return UserModifyRequestDto
+            .builder()
+            .name(VALID_NAME)
+            .phone(invalidPhone)
+            .password(PASSWORD)
+            .confirmPassword(CONFIRM_PASSWORD)
+            .build();
+    }
+
     public static final UserModifyRequestDto UPDATE_WITH_DIFFERENT_PASSWORDS_REQUEST = UserModifyRequestDto
         .builder()
         .name(UPDATE_NAME)
@@ -77,7 +149,6 @@ public class UserFixture {
         .password(UPDATE_PASSWORD)
         .confirmPassword(CONFIRM_PASSWORD_WITH_MISMATCH)
         .build();
-
 
     public static final User EXISTING_USER = User
         .builder()
