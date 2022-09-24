@@ -1,6 +1,7 @@
 package com.shyb.evcharging.card.dto;
 
 import com.shyb.evcharging.card.domain.Card;
+import com.shyb.evcharging.card.dto.validator.ExpiryMonthConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -17,16 +18,17 @@ public class CardRequestDto {
 
     @NotNull(message = "cvc번호를 입력해주세요.")
     @NotBlank(message = "cvc번호를 입력해주세요.")
-    @Pattern(regexp = "[0-1]{3}", message = "cvc 번호가 올바르지 않습니다.")
+    @Pattern(regexp = "[0-9]{3}", message = "cvc 번호가 올바르지 않습니다.")
     private String cvc;
 
     @NotNull(message = "유효기간을 입력해주세요.")
     @NotBlank(message = "유효기간을 입력해주세요.")
-    @Pattern(regexp = "[0-1]{1}[0-9]{1}", message = "유효년이 올바르지 않습니다.")
+    @Pattern(regexp = "[0-9]{1}[0-9]{1}", message = "유효기간(년) 입력이 올바른지 확인해주세요.")
     private String expiryYear;
 
     @NotNull(message = "유효기간을 입력해주세요.")
     @NotBlank(message = "유효기간을 입력해주세요.")
+    @ExpiryMonthConstraint
     private String expiryMonth;
 
     public Card toEntity() {
