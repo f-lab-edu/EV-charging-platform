@@ -1,13 +1,8 @@
 package com.shyb.evcharging.card.exception;
 
 import com.shyb.evcharging.card.dto.CardErrorResponseDto;
-import com.shyb.evcharging.user.dto.ErrorResponseDto;
-import com.shyb.evcharging.user.exception.EmailDuplicateException;
-import com.shyb.evcharging.user.exception.PasswordMisMatchException;
-import com.shyb.evcharging.user.exception.UserNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.validation.ConstraintViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,9 +24,17 @@ public class CardExceptionHandler {
      * @param ex MethodArgumentNotValidException 예외
      * @return 메시지가 담긴 응답
      */
-    @ExceptionHandler(ConstraintViolationException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public CardErrorResponseDto handleMethodArgumentNotValid(ConstraintViolationException ex) {
-        return new CardErrorResponseDto(ex.getMessage());
+    public CardErrorResponseDto handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+        List<String> errors = ex.getBindingResult()
+            .getFieldErrors()
+            .stream()
+            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+            .collect(Collectors.toList());
+
+        String errorJoining = String.join("/", errors);
+
+        return new CardErrorResponseDto(errorJoining);
     }
 }

@@ -2,15 +2,12 @@ package com.shyb.evcharging.card.application;
 
 import static com.shyb.evcharging.utils.CardFixture.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.shyb.evcharging.card.domain.Card;
 import com.shyb.evcharging.card.dto.CardResponseDto;
 import com.shyb.evcharging.card.repository.CardRepository;
-import com.shyb.evcharging.user.domain.User;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
