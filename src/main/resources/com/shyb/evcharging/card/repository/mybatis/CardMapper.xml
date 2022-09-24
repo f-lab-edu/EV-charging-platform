@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 인터페이스 지정-->
+<mapper  namespace="com.shyb.evcharging.card.repository.mybatis.CardMapper">
+    <insert id ="save" useGeneratedKeys="true" keyProperty="id">
+        insert into cards (card_number, cvc, expiry_year, expiry_month)
+        values (#{cardNumber}, #{cvc}, #{expiryYear}, #{expiryMonth})
+    </insert>
+</mapper>
