@@ -6,6 +6,6 @@ import com.shyb.evcharging.user.dto.UserModifyRequestDto;
 import java.util.Optional;
 
 public interface CardRepository {
-    Card save(Card user);
+    Card save(Card card);
     Optional<Card> findById(Long id);
 }

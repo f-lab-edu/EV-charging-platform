@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import lombok.Data;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -39,5 +40,15 @@ public class CardRequestDto {
             .expiryMonth(this.expiryMonth)
             .build();
     }
+
+    @Builder
+    public CardRequestDto(String cardNumber, String cvc, String expiryYear, String expiryMonth) {
+        this.cardNumber = cardNumber;
+        this.cvc = cvc;
+        this.expiryYear = expiryYear;
+        this.expiryMonth = expiryMonth;
+    }
+
+
 
 }
