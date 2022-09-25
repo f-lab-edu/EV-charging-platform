@@ -14,4 +14,6 @@ public interface CardMapper {
 
     Optional<Card> findById(Long id);
 
+    void delete(Long id);
+
 }

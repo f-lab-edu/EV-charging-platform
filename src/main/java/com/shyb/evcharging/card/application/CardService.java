@@ -4,6 +4,7 @@ import com.shyb.evcharging.card.domain.Card;
 import com.shyb.evcharging.card.dto.CardRequestDto;
 import com.shyb.evcharging.card.dto.CardResponseDto;
 import com.shyb.evcharging.card.repository.CardRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,16 @@ public class CardService {
             .expiryYear(savedCard.getExpiryYear())
             .expiryMonth(savedCard.getExpiryMonth())
             .build();
+    }
+
+    public void delete(Long id) {
+
+        Optional<Card> findCard = cardRepository.findById(id);
+        if (findCard.isEmpty()) {
+            throw new IllegalArgumentException("삭제 요청된 카드가 존재하지 않습니다.");
+        }
+
+        cardRepository.delete(id);
     }
 
 }

@@ -37,4 +37,10 @@ public class CardExceptionHandler {
 
         return new CardErrorResponseDto(errorJoining);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public CardErrorResponseDto handleIllegalArgumentException(IllegalArgumentException ex) {
+        return new CardErrorResponseDto(ex.getMessage());
+    }
 }

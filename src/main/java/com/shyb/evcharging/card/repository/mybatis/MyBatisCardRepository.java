@@ -20,26 +20,35 @@ public class MyBatisCardRepository implements CardRepository {
     private final CardMapper cardMapper;
 
     /**
-     * 사용자를 등록한 후 리턴합니다.
+     * 카드를 등록한 후 리턴합니다.
      *
-     * @param user 생성 요청 사용자 정보
-     * @return 등록된 사용자
+     * @param card 등록 요청 카드 정보
+     * @return 등록된 카드
      */
     @Override
-    public Card save(Card user) {
-        cardMapper.save(user);
-        return user;
+    public Card save(Card card) {
+        cardMapper.save(card);
+        return card;
     }
 
     /**
-     * 사용자를 조회합니다.
+     * 카드를 조회합니다.
      *
-     * @param id 조회할 사용자 식별자
-     * @return 조회된 사용자
+     * @param id 조회할 카드 식별자
+     * @return 조회된 카드
      */
     @Override
     public Optional<Card> findById(Long id) {
         return cardMapper.findById(id);
+    }
+
+    /**
+     * 카드를 삭제합니다.
+     * @param id 삭제할 카드 식별자
+     */
+    @Override
+    public void delete(Long id) {
+        cardMapper.delete(id);
     }
 
 }

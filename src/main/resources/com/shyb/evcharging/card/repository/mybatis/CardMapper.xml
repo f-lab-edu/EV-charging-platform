@@ -8,4 +8,8 @@
         insert into cards (card_number, cvc, expiry_year, expiry_month)
         values (#{cardNumber}, #{cvc}, #{expiryYear}, #{expiryMonth})
     </insert>
+
+    <delete id="delete">
+        delete from cards where id = #{id}
+    </delete>
 </mapper>
