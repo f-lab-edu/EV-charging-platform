@@ -8,6 +8,7 @@ import com.shyb.evcharging.user.dto.UserModifyRequestDto;
 import com.shyb.evcharging.user.dto.UserRequestDto;
 import com.shyb.evcharging.user.dto.UserResponseDto;
 import com.shyb.evcharging.user.exception.EmailDuplicateException;
+import com.shyb.evcharging.user.exception.UserExceptionHandler;
 import com.shyb.evcharging.user.exception.UserNotFoundException;
 import com.shyb.evcharging.utils.MockMvcUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,7 +53,7 @@ class UserControllerTest {
 
     @BeforeEach
     public void setUp() {
-        mockMvc = MockMvcUtil.createMockMvc(userController);
+        mockMvc = MockMvcUtil.createMockMvc(userController, new UserExceptionHandler());
     }
 
     @DisplayName("save 메소드는")
@@ -201,7 +202,7 @@ class UserControllerTest {
         @DisplayName("이메일이 존재하지 않으면 상태코드 200을 리턴한다.")
         @Test
 //
-        void email_is_not_duplicate() throws Exception{
+        void email_is_not_duplicate() throws Exception {
 
             String notExistingEmail = NOT_EXISTING_EMAIL;
 
@@ -273,7 +274,7 @@ class UserControllerTest {
         @ParameterizedTest
         @EmptySource
         @ValueSource(strings = {"!@#", "hello", "자바java", "자바!!", "스프링spring!!", "이름은이십자를초과할수없습니다를테스트합니다"})
-        void name_includes_invalid_character(String invalidName) throws Exception{
+        void name_includes_invalid_character(String invalidName) throws Exception {
             // given
             UserModifyRequestDto updateRequest = updateRequestWithInvalidName(invalidName);
 
@@ -341,7 +342,7 @@ class UserControllerTest {
 
         @DisplayName("사용자가 존재하지 않으면 예외를 던지고 상태코드 400을 리턴한다.")
         @Test
-        void user_not_exists() throws Exception{
+        void user_not_exists() throws Exception {
             // given
             doThrow(new UserNotFoundException()).when(userService).findById(USER_ID_NOT_STORED);
 
